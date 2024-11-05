@@ -95,6 +95,8 @@ return [
                 ],
                 $contents
             );
+
+            return $contents;
         },
     ],
 

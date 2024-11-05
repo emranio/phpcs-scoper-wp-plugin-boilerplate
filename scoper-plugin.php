@@ -47,10 +47,11 @@ final class MyPluginNamespace
 	public function deactivatePlugin() {}
 	public function initiate()
 	{
-		// echo '<br>';
-		// var_dump(class_exists('MyPluginNamespace\Tests\Test'));
+		echo '<br>';
+		var_dump(class_exists('MyPluginNamespace\Tests\Test'));
+		var_dump(class_exists('MyVendorPrefix\Dbout\WpOrm\Models\Article'));
 
-		// die();
+		die();
 	}
 }
 
