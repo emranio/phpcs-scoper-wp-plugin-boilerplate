@@ -28,7 +28,7 @@ final class MyPluginNamespace
 		 * Make sure to update autoload file path after each scoper build at vendor/scoper-autoload.php file
 		 * $loader = require_once __DIR__.'/build/vendor/src/autoload.php';
 		 */
-		require_once self::pluginDir() . 'prefixed/vendor/scoper-autoload.php';
+		require_once self::pluginDir() . 'vendor-prefixed/scoper-autoload.php';
 		add_action('plugins_loaded', [$this, 'initiate']);
 		register_activation_hook(__FILE__, [$this, 'activatePlugin']);
 		register_deactivation_hook(__FILE__, [$this, 'deactivatePlugin']);

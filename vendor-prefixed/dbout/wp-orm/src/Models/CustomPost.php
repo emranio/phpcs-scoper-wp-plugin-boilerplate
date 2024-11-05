@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Copyright (c) 2024 Dimitri BOUTEILLE (https://github.com/dimitriBouteille)
+ * See LICENSE.txt for license details.
+ *
+ * Author: Dimitri BOUTEILLE <bonjour@dimitri-bouteille.fr>
+ */
+namespace MyVendorPrefix\Dbout\WpOrm\Models;
+
+use MyVendorPrefix\Dbout\WpOrm\Api\CustomModelTypeInterface;
+use MyVendorPrefix\Dbout\WpOrm\Exceptions\CannotOverrideCustomTypeException;
+use MyVendorPrefix\Dbout\WpOrm\Exceptions\NotAllowedException;
+use MyVendorPrefix\Dbout\WpOrm\Scopes\CustomModelTypeScope;
+abstract class CustomPost extends Post implements CustomModelTypeInterface
+{
+    /**
+     * @var string
+     */
+    protected string $_type;
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct(array_merge($attributes, [self::TYPE => $this->_type]));
+    }
+    /**
+     * @inheritDoc
+     */
+    public function getPostType(): ?string
+    {
+        return $this->_type;
+    }
+    /**
+     * @inheritDoc
+     */
+    public function getCustomTypeCode(): string
+    {
+        return $this->getPostType();
+    }
+    /**
+     * @inheritDoc
+     */
+    public function getCustomTypeColumn(): string
+    {
+        return self::TYPE;
+    }
+    /**
+     * @param string $type
+     * @throws NotAllowedException
+     * @return never
+     */
+    final public function setPostType(string $type): never
+    {
+        throw new CannotOverrideCustomTypeException($this->_type);
+    }
+    /**
+     * @return string|null
+     * @deprecated Remove in next version - Use constant
+     */
+    public static function type(): ?string
+    {
+        // @phpstan-ignore-next-line
+        return (new static())->getPostType();
+    }
+    /**
+     * @inheritDoc
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new CustomModelTypeScope());
+    }
+}

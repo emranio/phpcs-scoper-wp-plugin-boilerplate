@@ -133,13 +133,14 @@ A blank WP plugin, has phpcs, scoper, psr autoloading and utility package  etc p
    ```php
       "scoped": [
                   "composer bin php-scoper require --dev humbug/php-scoper",
-                  "vendor/bin/php-scoper add-prefix --output-dir prefixed --force",
-                  "composer dump-autoload -d prefixed"
+                  "vendor/bin/php-scoper add-prefix --output-dir temp --force",
+                  "composer dump-autoload -d temp"
             ],
    ```
 * in scoper.inc.php we also told to ignore root namespace .
-* this generate a new scoper-autoload file at prefixed/vendor folder which include our newly prefixed all classes and files etc .
-* by including this scoper-autoload we can access all new scoped files and classes .
+* this generate a new scoper-autoload file at temp/vendor folder which include our newly prefixed all classes and files etc .
+* later "mv source_directory target_directory && rm -rf directory_to_delete" will move the temp/vendor directory to the root with the name "vendor-prefixed". [this command will only works on linux and macOS].
+* by including this scoper-autoload from "vendor-prefixed" we can access all new scoped files and classes.
 
 
 
@@ -183,12 +184,13 @@ Ref.
         ],
         "scoped": [
             "composer bin php-scoper require --dev humbug/php-scoper",
-            "vendor/bin/php-scoper add-prefix --output-dir prefixed --force",
-            "composer dump-autoload -d scoped"
+            "vendor/bin/php-scoper add-prefix --output-dir temp --force",
+            "composer dump-autoload -d temp"
         ],
         "scoped-install": [
             "composer install",
-            "composer scoped"
+            "composer scoped",
+            "mv temp/vendor vendor-prefixed && rm -rf temp"
         ]
     },
     "require": { },

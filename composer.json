@@ -7,12 +7,16 @@
         ],
         "scoped": [
             "composer bin php-scoper require --dev humbug/php-scoper",
-            "vendor/bin/php-scoper add-prefix --output-dir prefixed --force",
-            "composer dump-autoload -d prefixed"
+            "vendor/bin/php-scoper add-prefix --output-dir temp --force",
+            "composer dump-autoload -d temp"
+        ],
+        "move-and-delete-temp": [
+            "mv temp/vendor vendor-prefixed && rm -rf temp"
         ],
         "scoped-install": [
             "composer install",
-            "composer scoped"
+            "composer scoped",
+            "mv temp/vendor vendor-prefixed && rm -rf temp"
         ]
     },
     "authors": [
@@ -41,7 +45,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MyPluginNamespace\\": "../src"
+            "MyPluginNamespace\\": "src"
         }
     }
 }
